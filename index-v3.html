@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#6B0F1A"/>
+<meta name="description" content="MindFusion Turf – Pronostics Quinté+ générés par intelligence artificielle, résultats comparés chaque jour à l'arrivée officielle"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="MindFusion Turf"/>
+<link rel="manifest" href="manifest.json"/>
+<title>MindFusion Turf</title>
+<style>
+/* ═══════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════ */
+:root{
+  --bx:#6B0F1A; --bx2:#8B1A27; --bx3:#4A0A12;
+  --or:#C9A84C; --or2:#F0D080; --or3:#9A7A2A;
+  --vt:#1A5C2A; --vt2:#237A38; --vt3:#2EAA4A;
+  --cream:#FDF8EE; --gris:#F5F0E8; --blanc:#FFFFFF;
+  --txt:#1A1208; --txt2:#444;
+  --nav-h:60px;
+  --radius:12px;
+  --shadow:0 4px 24px rgba(0,0,0,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Georgia',serif;background:#F8F3EA;color:var(--txt);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none}
+img{max-width:100%;display:block}
+
+/* ═══════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:1000;
+  background:linear-gradient(135deg,var(--bx3) 0%,var(--bx) 100%);
+  border-bottom:2px solid var(--or);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  box-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+.topbar-brand{
+  font-size:18px;font-weight:bold;color:var(--or2);
+  display:flex;align-items:center;gap:8px;letter-spacing:.5px;
+}
+.topbar-brand span{font-size:22px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.btn-login{
+  background:transparent;border:1px solid var(--or);
+  color:var(--or2);padding:6px 14px;border-radius:20px;
+  font-size:12px;letter-spacing:1px;transition:.2s;
+}
+.btn-login:hover{background:var(--or);color:var(--bx)}
+.burger{
+  background:transparent;border:none;color:var(--or2);
+  font-size:24px;display:none;padding:4px;
+}
+
+/* ═══════════════════════════════════════
+   BOTTOM NAV (mobile)
+═══════════════════════════════════════ */
+.bottomnav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:1000;
+  background:linear-gradient(135deg,var(--bx3),var(--bx));
+  border-top:2px solid var(--or);
+  height:62px;
+}
+.bottomnav-items{
+  display:flex;height:100%;
+}
+.bnav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;background:transparent;
+  color:rgba(255,255,255,.55);font-size:9px;letter-spacing:.5px;
+  text-transform:uppercase;transition:.2s;border:none;
+}
+.bnav-item.active{color:var(--or2)}
+.bnav-item .ico{font-size:20px}
+
+/* ═══════════════════════════════════════
+   DESKTOP SIDENAV
+═══════════════════════════════════════ */
+.sidenav{
+  position:fixed;top:var(--nav-h);left:0;bottom:0;width:220px;z-index:900;
+  background:linear-gradient(180deg,var(--bx3) 0%,#2A0510 100%);
+  border-right:2px solid var(--or3);
+  padding:20px 0;overflow-y:auto;
+}
+.sidenav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 22px;color:rgba(255,255,255,.65);
+  font-family:Arial,sans-serif;font-size:13px;
+  letter-spacing:.5px;cursor:pointer;transition:.2s;
+  border-left:3px solid transparent;background:transparent;width:100%;
+}
+.sidenav-item:hover{background:rgba(201,168,76,.1);color:var(--or2)}
+.sidenav-item.active{
+  color:var(--or2);border-left-color:var(--or);
+  background:rgba(201,168,76,.15);
+}
+.sidenav-item .ico{font-size:18px;min-width:22px}
+
+/* ═══════════════════════════════════════
+   MAIN LAYOUT
+═══════════════════════════════════════ */
+.main{
+  margin-top:var(--nav-h);
+  margin-left:220px;
+  min-height:calc(100vh - var(--nav-h));
+}
+.page{display:none;animation:fadeIn .3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ═══════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;border-radius:30px;font-size:14px;
+  font-family:Arial,sans-serif;font-weight:bold;
+  letter-spacing:1px;transition:.25s;
+}
+.btn-or{background:linear-gradient(135deg,var(--or),var(--or2));color:var(--bx);box-shadow:0 4px 16px rgba(201,168,76,.4)}
+.btn-or:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.5)}
+.btn-bx{background:linear-gradient(135deg,var(--bx),var(--bx2));color:var(--or2);box-shadow:0 4px 16px rgba(107,15,26,.4)}
+.btn-bx:hover{transform:translateY(-2px)}
+.btn-vt{background:linear-gradient(135deg,var(--vt),var(--vt2));color:#fff;box-shadow:0 4px 14px rgba(26,92,42,.4)}
+.btn-sm{padding:8px 18px;font-size:12px}
+.btn-outline-or{background:transparent;border:2px solid var(--or);color:var(--or);border-radius:30px;padding:10px 24px;font-size:13px;font-family:Arial,sans-serif;font-weight:bold;letter-spacing:1px;transition:.2s}
+.btn-outline-or:hover{background:var(--or);color:var(--bx)}
+
+/* section title */
+.sec-title{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;
+}
+.sec-title .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--or3),transparent)}
+.sec-title .label{font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;color:var(--bx);white-space:nowrap}
+
+/* card base */
+.card{background:var(--blanc);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+
+/* badges */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;font-family:Arial,sans-serif}
+.badge-or{background:var(--or);color:var(--bx)}
+.badge-vt{background:var(--vt3);color:#fff}
+.badge-bx{background:var(--bx);color:var(--or2)}
+.badge-gray{background:#eee;color:#666}
+
+/* ═══════════════════════════════════════
+   PAGE ACCUEIL
+═══════════════════════════════════════ */
+.hero{
+  background:linear-gradient(145deg,var(--bx3) 0%,var(--bx) 45%,var(--bx2) 100%);
+  padding:60px 40px 50px;
+  text-align:center;position:relative;overflow:hidden;
+  border-bottom:3px solid var(--or);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(201,168,76,0.15)'/%3E%3C/svg%3E") repeat;
+  pointer-events:none;
+}
+.hero-emoji{font-size:56px;margin-bottom:16px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+.hero-title{font-size:clamp(28px,5vw,48px);color:var(--blanc);font-weight:bold;text-shadow:0 2px 12px rgba(0,0,0,.5);margin-bottom:8px}
+.hero-title span{color:var(--or2)}
+.hero-sub{font-size:clamp(14px,2vw,18px);color:rgba(255,255,255,.8);font-style:italic;margin-bottom:6px}
+.hero-tagline{
+  display:inline-block;background:rgba(201,168,76,.15);border:1px solid var(--or3);
+  color:var(--or2);font-family:Arial,sans-serif;font-size:12px;letter-spacing:2px;
+  padding:4px 16px;border-radius:20px;margin-bottom:30px;text-transform:uppercase;
+}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.hero-stats{
+  display:flex;gap:0;justify-content:center;
+  background:rgba(0,0,0,.25);border-radius:12px;
+  border:1px solid rgba(201,168,76,.3);
+  overflow:hidden;max-width:500px;margin:0 auto;
+}
+.hero-stat{flex:1;padding:16px 10px;text-align:center;border-right:1px solid rgba(201,168,76,.2)}
+.hero-stat:last-child{border-right:none}
+.hero-stat-v{font-size:26px;font-weight:bold;color:var(--or2);font-family:Arial,sans-serif}
+.hero-stat-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;font-family:Arial,sans-serif}
+
+.home-section{padding:36px 40px}
+
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:36px}
+.feat-card{
+  background:var(--blanc);border-radius:var(--radius);padding:24px 20px;
+  border:1px solid rgba(201,168,76,.25);box-shadow:var(--shadow);
+  transition:.25s;text-align:center;
+}
+.feat-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(107,15,26,.15)}
+.feat-icon{font-size:36px;margin-bottom:12px}
+.feat-title{font-size:15px;font-weight:bold;color:var(--bx);margin-bottom:8px}
+.feat-desc{font-family:Arial,sans-serif;font-size:13px;color:var(--txt2);line-height:1.6}
+
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.testi-card{
+  background:var(--blanc);border-radius:var(--radius);padding:20px;
+  border-left:4px solid var(--or);box-shadow:var(--shadow);
+}
+.testi-stars{color:var(--or);font-size:16px;margin-bottom:8px}
+.testi-text{font-family:Arial,sans-serif;font-size:13px;color:var(--txt2);line-height:1.6;font-style:italic;margin-bottom:12px}
+.testi-author{font-family:Arial,sans-serif;font-size:12px;font-weight:bold;color:var(--bx)}
+
+/* ═══════════════════════════════════════
+   PAGE ABONNEMENTS
+═══════════════════════════════════════ */
+.plans-header{
+  background:linear-gradient(135deg,var(--bx3),var(--bx));
+  padding:40px 40px 30px;text-align:center;
+  border-bottom:3px solid var(--or);
+}
+.plans-header h1{font-size:28px;color:var(--blanc);margin-bottom:8px}
+.plans-header h1 span{color:var(--or2)}
+.plans-header p{font-family:Arial,sans-serif;font-size:14px;color:rgba(255,255,255,.75)}
+
+.plans-section{padding:36px 40px}
+.plans-toggle{display:flex;justify-content:center;gap:0;margin-bottom:36px;background:rgba(107,15,26,.08);border-radius:30px;padding:4px;border:1px solid rgba(201,168,76,.2);width:fit-content;margin-left:auto;margin-right:auto}
+.ptgl{padding:8px 24px;border-radius:26px;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:.5px;background:transparent;color:var(--bx);transition:.2s}
+.ptgl.active{background:var(--bx);color:var(--or2)}
+
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:860px;margin:0 auto 40px}
+.plan-card{
+  background:var(--blanc);border-radius:16px;overflow:hidden;
+  box-shadow:var(--shadow);border:2px solid #e8e0d0;transition:.25s;position:relative;
+}
+.plan-card.popular{border-color:var(--or);box-shadow:0 8px 40px rgba(201,168,76,.25)}
+.plan-card:hover{transform:translateY(-6px)}
+.plan-ribbon{
+  position:absolute;top:16px;right:-8px;
+  background:var(--or);color:var(--bx);font-size:10px;font-weight:bold;
+  letter-spacing:1px;padding:4px 14px;border-radius:4px 0 0 4px;
+  box-shadow:-2px 2px 8px rgba(0,0,0,.2);font-family:Arial,sans-serif;
+}
+.plan-head{
+  padding:28px 24px 20px;text-align:center;
+  border-bottom:1px solid rgba(201,168,76,.2);
+}
+.plan-icon{font-size:36px;margin-bottom:8px}
+.plan-name{font-size:18px;font-weight:bold;color:var(--bx);margin-bottom:4px}
+.plan-price{margin:12px 0 6px}
+.plan-price-val{font-size:38px;font-weight:bold;color:var(--bx);font-family:Arial,sans-serif;line-height:1}
+.plan-price-val sup{font-size:18px;vertical-align:top;margin-top:8px}
+.plan-price-val sub{font-size:14px;color:var(--txt2)}
+.plan-price-hint{font-family:Arial,sans-serif;font-size:11px;color:var(--txt2)}
+.plan-body{padding:20px 24px}
+.plan-features{list-style:none;margin-bottom:20px}
+.plan-features li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-family:Arial,sans-serif;font-size:13px;color:var(--txt2);
+  padding:6px 0;border-bottom:1px solid var(--gris);line-height:1.4;
+}
+.plan-features li:last-child{border-bottom:none}
+.plan-features li .chk{font-size:15px;min-width:18px}
+.plan-features li.off{color:#bbb}
+.plan-cta{width:100%;padding:13px;border-radius:30px;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;letter-spacing:1px;transition:.2s}
+.plan-cta-or{background:linear-gradient(135deg,var(--or),var(--or2));color:var(--bx);box-shadow:0 4px 16px rgba(201,168,76,.35)}
+.plan-cta-bx{background:linear-gradient(135deg,var(--bx),var(--bx2));color:var(--or2)}
+.plan-cta-vt{background:linear-gradient(135deg,var(--vt),var(--vt2));color:#fff}
+.plan-cta:hover{transform:translateY(-2px)}
+
+.plans-faq{max-width:660px;margin:0 auto}
+.faq-item{
+  background:var(--blanc);border-radius:10px;margin-bottom:10px;
+  border:1px solid rgba(201,168,76,.2);overflow:hidden;
+}
+.faq-q{
+  width:100%;background:transparent;padding:16px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:Arial,sans-serif;font-size:14px;font-weight:bold;color:var(--bx);
+  cursor:pointer;
+}
+.faq-q .arr{transition:.3s;font-size:12px;color:var(--or)}
+.faq-item.open .faq-q .arr{transform:rotate(180deg)}
+.faq-a{
+  display:none;padding:0 20px 16px;
+  font-family:Arial,sans-serif;font-size:13px;color:var(--txt2);line-height:1.7;
+}
+.faq-item.open .faq-a{display:block}
+
+/* ═══════════════════════════════════════
+   PAGE FICHES TECHNIQUES
+═══════════════════════════════════════ */
+.fiches-header{
+  background:linear-gradient(135deg,var(--vt) 0%,var(--vt2) 100%);
+  padding:36px 40px 28px;border-bottom:3px solid var(--or);
+}
+.fiches-header h1{font-size:26px;color:var(--blanc);margin-bottom:6px}
+.fiches-header h1 span{color:var(--or2)}
+.fiches-header p{font-family:Arial,sans-serif;font-size:13px;color:rgba(255,255,255,.8)}
+
+.fiches-section{padding:30px 40px}
+.fiches-filter{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;
+  align-items:center;
+}
+.flt-btn{
+  padding:7px 16px;border-radius:20px;font-family:Arial,sans-serif;
+  font-size:12px;font-weight:bold;letter-spacing:.5px;
+  background:var(--blanc);border:1px solid rgba(201,168,76,.3);
+  color:var(--bx);transition:.2s;
+}
+.flt-btn.active{background:var(--bx);color:var(--or2);border-color:var(--bx)}
+.flt-search{
+  margin-left:auto;display:flex;align-items:center;gap:8px;
+  background:var(--blanc);border:1px solid rgba(201,168,76,.3);
+  border-radius:20px;padding:6px 14px;
+}
+.flt-search input{border:none;outline:none;font-family:Arial,sans-serif;font-size:13px;width:140px;background:transparent}
+
+.horses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.horse-card{
+  background:var(--blanc);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);border:1px solid rgba(201,168,76,.2);transition:.25s;
+}
+.horse-card:hover{transform:translateY(-4px);box-shadow:0 10px 32px rgba(107,15,26,.15)}
+.horse-img{
+  height:140px;
+  background:linear-gradient(135deg,var(--bx3) 0%,var(--bx) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:60px;position:relative;overflow:hidden;
+}
+.horse-img::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:40px;
+  background:linear-gradient(transparent,rgba(0,0,0,.4));
+}
+.horse-img .num{
+  position:absolute;top:10px;left:10px;
+  background:var(--or);color:var(--bx);font-family:Arial,sans-serif;
+  font-size:12px;font-weight:bold;padding:3px 10px;border-radius:12px;
+}
+.horse-body{padding:14px 16px}
+.horse-name{font-size:15px;font-weight:bold;color:var(--bx);margin-bottom:4px}
+.horse-meta{font-family:Arial,sans-serif;font-size:12px;color:var(--txt2);margin-bottom:10px}
+.horse-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
+.hstat{text-align:center;background:var(--gris);border-radius:8px;padding:6px 4px}
+.hstat-v{font-size:15px;font-weight:bold;color:var(--bx);font-family:Arial,sans-serif}
+.hstat-l{font-size:9px;color:var(--txt2);letter-spacing:.5px;text-transform:uppercase;font-family:Arial,sans-serif}
+.horse-forme{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.hforme-box{
+  width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-family:'Courier New',monospace;font-size:11px;font-weight:bold;
+}
+.hf-1{background:#FFF3D6;color:var(--bx);border:1px solid var(--or)}
+.hf-2{background:#E8F5EC;color:var(--vt);border:1px solid var(--vt3)}
+.hf-3{background:#FFF0F0;color:#C0392B;border:1px solid #F5B7B1}
+.hf-x{background:#F5F5F5;color:#999;border:1px solid #ddd}
+.horse-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:10px;border-top:1px solid var(--gris);
+}
+.horse-price{font-size:17px;font-weight:bold;color:var(--bx);font-family:Arial,sans-serif}
+.horse-price sub{font-size:11px;color:var(--txt2)}
+.btn-buy{
+  background:linear-gradient(135deg,var(--or),var(--or2));color:var(--bx);
+  border:none;padding:8px 16px;border-radius:20px;
+  font-family:Arial,sans-serif;font-size:12px;font-weight:bold;letter-spacing:.5px;
+  cursor:pointer;transition:.2s;
+}
+.btn-buy:hover{transform:scale(1.05)}
+
+/* ═══════════════════════════════════════
+   PAGE PRONOSTICS DU JOUR
+═══════════════════════════════════════ */
+.pronos-header{
+  background:linear-gradient(135deg,var(--bx3),var(--bx));
+  padding:36px 40px 28px;border-bottom:3px solid var(--or);
+}
+.pronos-header h1{font-size:26px;color:var(--blanc);margin-bottom:6px}
+.pronos-header h1 span{color:var(--or2)}
+.pronos-header p{font-family:Arial,sans-serif;font-size:13px;color:rgba(255,255,255,.8)}
+
+.pronos-section{padding:30px 40px}
+.pronos-tabs{
+  display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;
+}
+.ptab{
+  padding:9px 20px;border-radius:20px;font-family:Arial,sans-serif;
+  font-size:13px;font-weight:bold;background:var(--blanc);
+  border:1px solid rgba(201,168,76,.25);color:var(--bx);transition:.2s;
+}
+.ptab.active{background:var(--bx);color:var(--or2)}
+
+.prono-card{
+  background:var(--blanc);border-radius:var(--radius);
+  border:2px solid rgba(201,168,76,.3);overflow:hidden;
+  margin-bottom:20px;box-shadow:var(--shadow);
+}
+.prono-card-head{
+  background:linear-gradient(90deg,var(--bx3),var(--bx));
+  padding:14px 20px;display:flex;justify-content:space-between;align-items:center;
+  border-bottom:2px solid var(--or);
+}
+.prono-race{color:var(--blanc);font-size:14px;font-weight:bold}
+.prono-race small{display:block;color:rgba(255,255,255,.65);font-size:11px;font-weight:normal;margin-top:2px;font-family:Arial,sans-serif}
+.prono-meta{text-align:right;font-family:Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.7)}
+
+.prono-table-wrap{overflow-x:auto}
+.prono-table{width:100%;border-collapse:collapse;font-family:Arial,sans-serif}
+.prono-table thead tr{background:linear-gradient(90deg,var(--bx),var(--bx2))}
+.prono-table thead th{
+  padding:10px 12px;font-size:11px;font-weight:bold;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--or2);
+  text-align:left;
+}
+.prono-table thead th:last-child{text-align:center}
+.prono-table tbody tr:nth-child(odd){background:#fff}
+.prono-table tbody tr:nth-child(even){background:var(--gris)}
+.prono-table tbody tr:hover{background:#FFF3D6}
+.prono-table tbody tr.top-pick{border-left:4px solid var(--or)}
+.prono-table tbody td{
+  padding:11px 12px;font-size:13px;border-bottom:1px solid rgba(201,168,76,.15);
+}
+.prono-num{
+  display:inline-flex;width:24px;height:24px;background:var(--bx);color:var(--or2);
+  border-radius:50%;font-size:11px;font-weight:bold;align-items:center;justify-content:center;margin-right:6px;
+}
+.prono-horse{font-weight:bold;color:var(--bx)}
+.prono-cote{font-weight:bold;color:var(--vt);font-size:14px}
+.prono-forme{font-family:'Courier New',monospace;letter-spacing:2px;color:var(--bx2)}
+.prono-conseil{text-align:center;padding-right:12px}
+
+.prono-card-foot{
+  background:linear-gradient(90deg,var(--vt),var(--vt2));
+  padding:10px 16px;
+  font-family:Arial,sans-serif;font-size:12px;font-weight:bold;color:#fff;
+  border-top:2px solid var(--or3);
+}
+
+.prono-selection{
+  background:linear-gradient(135deg,#FFFBF0,#FFF5D6);
+  border:2px solid var(--or);border-radius:10px;padding:16px 20px;
+  margin-bottom:16px;position:relative;overflow:hidden;
+}
+.prono-selection::before{
+  content:'';position:absolute;top:0;left:0;width:5px;height:100%;
+  background:linear-gradient(180deg,var(--or),var(--or3));
+}
+.sel-head{font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:var(--bx);margin-bottom:10px}
+.sel-rows{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sel-row{display:flex;align-items:center;gap:8px;font-family:Arial,sans-serif;font-size:13px}
+.sel-row strong{color:var(--bx)}
+
+/* ═══════════════════════════════════════
+   ESPACE MEMBRE
+═══════════════════════════════════════ */
+.membre-header{
+  background:linear-gradient(135deg,var(--bx3),var(--bx));
+  padding:36px 40px 28px;border-bottom:3px solid var(--or);
+}
+.membre-header h1{font-size:26px;color:var(--blanc);margin-bottom:6px}
+.membre-header h1 span{color:var(--or2)}
+
+.auth-wrap{
+  max-width:420px;margin:40px auto;padding:0 20px;
+}
+.auth-card{
+  background:var(--blanc);border-radius:16px;overflow:hidden;
+  box-shadow:0 8px 40px rgba(107,15,26,.18);border:2px solid rgba(201,168,76,.3);
+}
+.auth-card-head{
+  background:linear-gradient(135deg,var(--bx),var(--bx2));
+  padding:24px;text-align:center;border-bottom:2px solid var(--or);
+}
+.auth-card-head .ico{font-size:40px;margin-bottom:8px}
+.auth-card-head h2{color:var(--or2);font-size:20px}
+.auth-card-head p{color:rgba(255,255,255,.7);font-family:Arial,sans-serif;font-size:13px;margin-top:4px}
+.auth-card-body{padding:28px 24px}
+.form-group{margin-bottom:18px}
+.form-label{
+  display:block;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;
+  letter-spacing:.5px;color:var(--bx);margin-bottom:6px;
+}
+.form-input{
+  width:100%;padding:12px 16px;border:2px solid rgba(201,168,76,.3);
+  border-radius:10px;font-family:Arial,sans-serif;font-size:14px;
+  transition:.2s;outline:none;background:var(--cream);
+}
+.form-input:focus{border-color:var(--or);background:#fff}
+.form-footer{
+  text-align:center;margin-top:16px;
+  font-family:Arial,sans-serif;font-size:13px;color:var(--txt2);
+}
+.form-footer a{color:var(--bx);font-weight:bold;cursor:pointer}
+.btn-full{width:100%;padding:14px;border-radius:30px;font-family:Arial,sans-serif;font-size:15px;font-weight:bold;letter-spacing:1px}
+.btn-full-or{background:linear-gradient(135deg,var(--or),var(--or2));color:var(--bx);box-shadow:0 4px 18px rgba(201,168,76,.4)}
+
+/* DASHBOARD */
+.dashboard-wrap{display:none}
+.dashboard-wrap.visible{display:block}
+.auth-wrap.hidden{display:none}
+
+.dash-section{padding:28px 40px}
+.dash-welcome{
+  background:linear-gradient(135deg,var(--bx3),var(--bx));
+  padding:24px 40px;display:flex;align-items:center;gap:16px;
+  border-bottom:3px solid var(--or);
+}
+.dash-avatar{
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--or),var(--or2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;border:2px solid var(--or2);flex-shrink:0;
+}
+.dash-info h2{color:var(--or2);font-size:18px;margin-bottom:4px}
+.dash-info p{color:rgba(255,255,255,.7);font-family:Arial,sans-serif;font-size:13px}
+.dash-info .dash-plan{
+  display:inline-block;background:var(--or);color:var(--bx);
+  font-size:10px;font-weight:bold;letter-spacing:1px;
+  padding:2px 10px;border-radius:12px;margin-left:8px;font-family:Arial,sans-serif;
+}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px}
+.dash-kpi{
+  background:var(--blanc);border-radius:var(--radius);padding:18px 16px;
+  border:1px solid rgba(201,168,76,.2);box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:14px;
+}
+.dash-kpi-icon{font-size:30px}
+.dash-kpi-val{font-size:22px;font-weight:bold;color:var(--bx);font-family:Arial,sans-serif}
+.dash-kpi-lbl{font-family:Arial,sans-serif;font-size:11px;color:var(--txt2);letter-spacing:.5px}
+
+.history-list{display:flex;flex-direction:column;gap:10px}
+.hist-item{
+  background:var(--blanc);border-radius:10px;padding:14px 18px;
+  display:flex;align-items:center;gap:14px;
+  border:1px solid rgba(201,168,76,.2);box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.hist-date{font-family:Arial,sans-serif;font-size:11px;color:var(--txt2);min-width:65px}
+.hist-info{flex:1}
+.hist-name{font-size:14px;font-weight:bold;color:var(--bx);margin-bottom:2px}
+.hist-sub{font-family:Arial,sans-serif;font-size:12px;color:var(--txt2)}
+.hist-result{
+  font-family:Arial,sans-serif;font-size:13px;font-weight:bold;
+  padding:4px 12px;border-radius:12px;
+}
+.hist-win{background:#E8F5EC;color:var(--vt)}
+.hist-lose{background:#FEF0F0;color:#C0392B}
+.hist-partial{background:#FFF3D6;color:var(--bx)}
+
+/* ═══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--blanc);border-radius:16px;max-width:460px;width:100%;
+  overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);
+  animation:modalIn .3s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:none}}
+.modal-head{
+  background:linear-gradient(135deg,var(--bx),var(--bx2));
+  padding:20px 24px;display:flex;justify-content:space-between;align-items:center;
+  border-bottom:2px solid var(--or);
+}
+.modal-head h3{color:var(--or2);font-size:18px}
+.modal-close{background:transparent;color:rgba(255,255,255,.7);font-size:22px;border:none;cursor:pointer;line-height:1;padding:2px 6px;border-radius:4px;transition:.2s}
+.modal-close:hover{background:rgba(255,255,255,.15)}
+.modal-body{padding:24px}
+.modal-footer{padding:0 24px 24px;display:flex;gap:10px;justify-content:flex-end}
+.modal-plan-name{text-align:center;margin-bottom:20px}
+.modal-plan-name .plan-n{font-size:20px;font-weight:bold;color:var(--bx)}
+.modal-plan-name .plan-p{font-size:32px;font-weight:bold;color:var(--or3);font-family:Arial,sans-serif}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+.toast{
+  position:fixed;bottom:80px;right:20px;z-index:3000;
+  background:var(--vt);color:#fff;
+  padding:12px 20px;border-radius:10px;
+  font-family:Arial,sans-serif;font-size:14px;font-weight:bold;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+  transform:translateY(100px);opacity:0;
+  transition:.35s cubic-bezier(.34,1.56,.64,1);
+  max-width:300px;
+}
+.toast.show{transform:none;opacity:1}
+.toast.error{background:var(--bx)}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.site-footer{
+  background:linear-gradient(135deg,var(--bx3),#1A040A);
+  padding:24px 40px;border-top:2px solid var(--or3);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-brand{color:var(--or2);font-size:15px;font-weight:bold}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap}
+.footer-links a{color:rgba(255,255,255,.5);font-family:Arial,sans-serif;font-size:12px;transition:.2s}
+.footer-links a:hover{color:var(--or2)}
+.footer-copy{color:rgba(255,255,255,.35);font-family:Arial,sans-serif;font-size:11px}
+
+/* ═══════════════════════════════════════
+   INSTALL BANNER
+═══════════════════════════════════════ */
+.install-banner{
+  display:none;
+  position:fixed;bottom:70px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--bx),var(--bx2));
+  border:2px solid var(--or);border-radius:14px;
+  padding:14px 20px;z-index:1500;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  max-width:340px;width:calc(100% - 40px);
+}
+.install-banner.visible{display:flex;align-items:center;gap:14px}
+.install-banner p{color:#fff;font-family:Arial,sans-serif;font-size:13px;flex:1}
+.install-banner p strong{color:var(--or2);display:block;margin-bottom:2px}
+.btn-install{background:var(--or);color:var(--bx);border:none;padding:8px 16px;border-radius:20px;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;cursor:pointer}
+.btn-install-close{background:transparent;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;line-height:1;padding:2px}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media(max-width:768px){
+  .sidenav{display:none}
+  .main{margin-left:0;margin-bottom:62px}
+  .bottomnav{display:flex}
+  .burger{display:block}
+  .hero{padding:40px 20px 36px}
+  .home-section,.plans-section,.fiches-section,.pronos-section,.dash-section{padding:24px 16px}
+  .plans-header,.fiches-header,.pronos-header,.membre-header{padding:28px 16px 22px}
+  .dash-welcome{padding:18px 16px}
+  .dash-section{padding:20px 16px}
+  .site-footer{padding:18px 16px;flex-direction:column;text-align:center}
+  .hero-stats{flex-direction:column;gap:0}
+  .hero-stat{border-right:none;border-bottom:1px solid rgba(201,168,76,.2)}
+  .hero-stat:last-child{border-bottom:none}
+  .sel-rows{grid-template-columns:1fr}
+  .stats-grid-3{grid-template-columns:1fr}
+  .plans-grid{grid-template-columns:1fr}
+  .flt-search{display:none}
+}
+@media(max-width:480px){
+  .hero-ctas{flex-direction:column;align-items:center}
+  .plans-toggle{width:100%}
+  .ptgl{flex:1;text-align:center}
+}
+
+/* ═══════════════════════════════════════
+   MÉTÉO & CONDITIONS DE PISTE
+═══════════════════════════════════════ */
+.meteo-block{
+  background:linear-gradient(135deg,#0F2A4A 0%,#1A3D6B 100%);
+  border-radius:var(--radius);border:2px solid var(--or3);
+  overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow);
+}
+.meteo-head{
+  background:rgba(0,0,0,.25);padding:10px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(201,168,76,.25);
+}
+.meteo-head-l{
+  font-family:Arial,sans-serif;font-size:11px;font-weight:bold;
+  letter-spacing:2px;text-transform:uppercase;color:var(--or2);
+  display:flex;align-items:center;gap:8px;
+}
+.meteo-src{font-family:Arial,sans-serif;font-size:10px;color:rgba(255,255,255,.4)}
+.meteo-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+  gap:0;
+}
+.meteo-cell{
+  padding:14px 16px;text-align:center;
+  border-right:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.meteo-cell:last-child{border-right:none}
+.meteo-ico{font-size:24px;margin-bottom:4px}
+.meteo-val{font-family:Arial,sans-serif;font-size:16px;font-weight:bold;color:#fff;line-height:1}
+.meteo-lbl{font-family:Arial,sans-serif;font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.5px;margin-top:2px}
+.piste-row{
+  padding:10px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.piste-label{font-family:Arial,sans-serif;font-size:11px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase}
+.piste-badge{
+  padding:4px 14px;border-radius:20px;font-family:Arial,sans-serif;
+  font-size:12px;font-weight:bold;letter-spacing:.5px;
+}
+.piste-bon{background:#1A5C2A;color:#7DEFA8;border:1px solid #2EAA4A}
+.piste-souple{background:#1A3D6B;color:#7BB8FF;border:1px solid #3A7BD5}
+.piste-lourd{background:#4A3500;color:#FFD06B;border:1px solid #9A7A2A}
+.piste-tres-lourd{background:#3D1A1A;color:#FF9090;border:1px solid #C0392B}
+.terrain-badge{
+  padding:4px 12px;border-radius:20px;font-family:Arial,sans-serif;font-size:11px;
+  background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);
+}
+.meteo-api-note{
+  padding:6px 18px;font-family:Arial,sans-serif;font-size:10px;
+  color:rgba(255,255,255,.35);font-style:italic;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+
+/* ═══════════════════════════════════════
+   COTES EN TEMPS RÉEL
+═══════════════════════════════════════ */
+.cotes-rt-block{
+  background:var(--blanc);border-radius:var(--radius);
+  border:2px solid rgba(201,168,76,.25);margin-bottom:18px;
+  overflow:hidden;box-shadow:var(--shadow);
+}
+.cotes-rt-head{
+  background:linear-gradient(90deg,var(--bx3),var(--bx));
+  padding:10px 18px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:2px solid var(--or);
+}
+.cotes-rt-head span{font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:var(--or2)}
+.live-dot{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:Arial,sans-serif;font-size:11px;color:#7DEFA8;
+}
+.live-dot::before{
+  content:'';width:8px;height:8px;border-radius:50%;background:#2EAA4A;
+  animation:pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.cotes-table{width:100%;border-collapse:collapse;font-family:Arial,sans-serif}
+.cotes-table th{
+  padding:9px 12px;font-size:10px;font-weight:bold;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--bx);background:var(--gris);text-align:left;
+}
+.cotes-table td{
+  padding:10px 12px;font-size:13px;border-bottom:1px solid rgba(201,168,76,.1);
+  vertical-align:middle;
+}
+.cotes-table tr:last-child td{border-bottom:none}
+.cotes-table tr:hover td{background:#FFF8E8}
+.cote-num{
+  display:inline-flex;width:24px;height:24px;background:var(--bx);color:var(--or2);
+  border-radius:50%;font-size:11px;font-weight:bold;align-items:center;justify-content:center;margin-right:6px;
+}
+.cote-horse-name{font-weight:bold;color:var(--bx)}
+.cote-val{font-size:15px;font-weight:bold;color:var(--vt)}
+.cote-arrow{font-size:14px;margin-left:4px;transition:color .3s}
+.arrow-down{color:#2EAA4A}
+.arrow-up{color:#C0392B}
+.arrow-stable{color:#999}
+.vol-bar-wrap{
+  background:#f0f0f0;border-radius:4px;height:8px;min-width:80px;overflow:hidden;
+}
+.vol-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--or),var(--or2));transition:width .6s ease}
+.vol-pct{font-family:Arial,sans-serif;font-size:11px;color:var(--txt2);margin-left:6px}
+.cote-depart{font-size:12px;color:var(--txt2)}
+.cote-depart strong{color:var(--bx2)}
+.rapport-last{font-size:12px;color:var(--txt2);font-style:italic}
+
+/* ═══════════════════════════════════════
+   STATS HIPPODROME
+═══════════════════════════════════════ */
+.hippo-stats-block{
+  background:linear-gradient(135deg,#0A1F0A,#1A3A1A);
+  border-radius:var(--radius);border:2px solid var(--or3);
+  overflow:hidden;margin-bottom:18px;box-shadow:var(--shadow);
+}
+.hippo-stats-head{
+  padding:10px 18px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(201,168,76,.2);
+  background:rgba(0,0,0,.2);
+}
+.hippo-stats-head span{font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:var(--or2)}
+.hippo-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+}
+.hippo-cell{
+  padding:14px 16px;border-right:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.hippo-cell-title{font-family:Arial,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px}
+.hippo-cell-val{font-family:Arial,sans-serif;font-size:15px;font-weight:bold;color:#fff;margin-bottom:2px}
+.hippo-cell-sub{font-family:Arial,sans-serif;font-size:11px;color:rgba(255,255,255,.5)}
+.corde-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:6px}
+.corde-int{background:linear-gradient(90deg,var(--or),var(--or2));height:100%;transition:width .6s}
+.corde-ext{background:rgba(255,255,255,.15);flex:1;height:100%}
+.hippo-meteo-hist{
+  padding:12px 18px;border-top:1px solid rgba(255,255,255,.07);
+  display:flex;gap:16px;flex-wrap:wrap;align-items:center;
+}
+.hmh-item{display:flex;align-items:center;gap:6px;font-family:Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.65)}
+.hmh-item strong{color:var(--or2)}
+
+/* ═══════════════════════════════════════
+   LIEN PMU DIRECT
+═══════════════════════════════════════ */
+.pmu-direct-btn{
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(135deg,#003F8A,#0052B4);
+  border:2px solid #4A90D9;border-radius:var(--radius);
+  padding:14px 20px;margin-bottom:18px;
+  cursor:pointer;transition:.25s;text-decoration:none;
+  box-shadow:0 4px 16px rgba(0,63,138,.35);
+}
+.pmu-direct-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,63,138,.45)}
+.pmu-direct-left{display:flex;align-items:center;gap:14px}
+.pmu-logo{
+  background:#fff;border-radius:8px;padding:6px 10px;
+  font-family:Arial,sans-serif;font-size:14px;font-weight:bold;color:#003F8A;
+}
+.pmu-direct-text strong{display:block;color:#fff;font-size:14px;margin-bottom:2px}
+.pmu-direct-text span{font-family:Arial,sans-serif;font-size:12px;color:rgba(255,255,255,.7)}
+.pmu-direct-arrow{font-size:22px;color:rgba(255,255,255,.7)}
+
+/* ═══════════════════════════════════════
+   SPARKLINE & FORME VISUELLE AMÉLIORÉE
+═══════════════════════════════════════ */
+.sparkline-wrap{margin-bottom:12px}
+.sparkline-title{
+  font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--txt2);margin-bottom:6px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tendance-badge{
+  padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;font-family:Arial,sans-serif;
+}
+.tend-hausse{background:#E8F5EC;color:var(--vt);border:1px solid var(--vt3)}
+.tend-stable{background:#FFF3D6;color:var(--bx);border:1px solid var(--or)}
+.tend-baisse{background:#FEF0F0;color:#C0392B;border:1px solid #F5B7B1}
+.sparkline-svg{width:100%;height:44px;display:block}
+.forme-legend{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;
+}
+.forme-legend-item{
+  display:flex;align-items:center;gap:4px;
+  font-family:Arial,sans-serif;font-size:10px;color:var(--txt2);
+}
+.fl-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.hforme-box.hf-1{background:#FFF3D6;color:var(--bx);border:1px solid var(--or)}
+.hforme-box.hf-2{background:#E8F5EC;color:var(--vt);border:1px solid var(--vt3)}
+.hforme-box.hf-3{background:#E8F0FF;color:#2255CC;border:1px solid #7BA7F5}
+.hforme-box.hf-x{background:#F5F5F5;color:#999;border:1px solid #ddd}
+
+/* ═══════════════════════════════════════
+   FICHES ENRICHIES
+═══════════════════════════════════════ */
+.horse-details-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;
+}
+.hdet{
+  display:flex;align-items:center;gap:6px;
+  background:var(--gris);border-radius:6px;padding:5px 8px;
+}
+.hdet-ico{font-size:13px}
+.hdet-content{min-width:0}
+.hdet-lbl{font-family:Arial,sans-serif;font-size:9px;color:var(--txt2);letter-spacing:.5px;text-transform:uppercase}
+.hdet-val{font-family:Arial,sans-serif;font-size:12px;font-weight:bold;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge-change{background:#FEF0F0;color:#C0392B;border:1px solid #F5B7B1;padding:2px 6px;border-radius:8px;font-size:9px;font-weight:bold;font-family:Arial,sans-serif}
+.badge-premier{background:#FFF3D6;color:var(--bx);border:1px solid var(--or);padding:2px 6px;border-radius:8px;font-size:9px;font-weight:bold;font-family:Arial,sans-serif}
+.badge-jck-change{background:#FFF0E0;color:#E67E22;border:1px solid #F5A623;padding:2px 6px;border-radius:8px;font-size:9px;font-weight:bold;font-family:Arial,sans-serif}
+
+.horse-pro-section{
+  background:var(--gris);border-radius:8px;padding:10px;margin-bottom:12px;
+  border-left:3px solid var(--or);
+}
+.horse-pro-title{
+  font-family:Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--bx);margin-bottom:8px;
+}
+.horse-pro-row{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:Arial,sans-serif;font-size:12px;color:var(--txt2);
+  padding:3px 0;border-bottom:1px solid rgba(201,168,76,.15);
+}
+.horse-pro-row:last-child{border-bottom:none}
+.horse-pro-row strong{color:var(--bx)}
+.hippo-winpct{font-weight:bold;color:var(--vt)}
+.prop-couleurs{
+  display:inline-flex;gap:4px;align-items:center;margin-left:4px;
+}
+.couleur-swatch{width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.15)}
+
+/* responsive for new blocks */
+@media(max-width:768px){
+  .meteo-grid{grid-template-columns:repeat(3,1fr)}
+  .hippo-grid{grid-template-columns:repeat(2,1fr)}
+  .horse-details-grid{grid-template-columns:1fr 1fr}
+  .cotes-table th:nth-child(4),.cotes-table td:nth-child(4),
+  .cotes-table th:nth-child(5),.cotes-table td:nth-child(5){display:none}
+}
+@media(max-width:480px){
+  .meteo-grid{grid-template-columns:repeat(2,1fr)}
+  .hippo-grid{grid-template-columns:1fr 1fr}
+  .horse-details-grid{grid-template-columns:1fr 1fr}
+  .cotes-table th:nth-child(3),.cotes-table td:nth-child(3){display:none}
+  .pmu-direct-btn{flex-direction:column;gap:10px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<header class="topbar">
+  <div class="topbar-brand"><span>🏇</span> MindFusion Turf</div>
+  <div class="topbar-right">
+    <button class="btn-login" onclick="navigate('membre')">Mon Compte</button>
+    <button class="burger" onclick="toggleMobileMenu()">☰</button>
+  </div>
+</header>
+
+<!-- ══ SIDENAV (desktop) ══ -->
+<nav class="sidenav" id="sidenav">
+  <button class="sidenav-item active" data-page="accueil" onclick="navigate('accueil')">
+    <span class="ico">🏠</span> Accueil
+  </button>
+  <button class="sidenav-item" data-page="abonnements" onclick="navigate('abonnements')">
+    <span class="ico">🎁</span> Accès gratuit
+  </button>
+  <button class="sidenav-item" data-page="fiches" onclick="navigate('fiches')">
+    <span class="ico">📋</span> Fiches Techniques
+  </button>
+  <button class="sidenav-item" data-page="pronostics" onclick="navigate('pronostics')">
+    <span class="ico">🏆</span> Pronostics du Jour
+  </button>
+  <button class="sidenav-item" data-page="membre" onclick="navigate('membre')">
+    <span class="ico">👤</span> Espace Membre
+  </button>
+</nav>
+
+<!-- ══ BOTTOM NAV (mobile) ══ -->
+<nav class="bottomnav">
+  <div class="bottomnav-items">
+    <button class="bnav-item active" data-page="accueil" onclick="navigate('accueil')"><span class="ico">🏠</span>Accueil</button>
+    <button class="bnav-item" data-page="abonnements" onclick="navigate('abonnements')"><span class="ico">🎁</span>Accès</button>
+    <button class="bnav-item" data-page="fiches" onclick="navigate('fiches')"><span class="ico">📋</span>Fiches</button>
+    <button class="bnav-item" data-page="pronostics" onclick="navigate('pronostics')"><span class="ico">🏆</span>Pronos</button>
+    <button class="bnav-item" data-page="membre" onclick="navigate('membre')"><span class="ico">👤</span>Compte</button>
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+<!-- ─────────────────────────────────────
+  PAGE : ACCUEIL
+───────────────────────────────────── -->
+<section class="page active" id="page-accueil">
+  <div class="hero">
+    <div class="hero-emoji">🏇</div>
+    <h1 class="hero-title">MindFusion <span>Turf</span></h1>
+    <p class="hero-sub">Le pronostic du Quinté+ analysé par intelligence artificielle, chaque matin</p>
+    <div class="hero-tagline">&#9670; Service en lancement &#9670; Accès gratuit &#9670;</div>
+    <div class="hero-ctas">
+      <button class="btn btn-or" onclick="navigate('abonnements')">🎁 Accès gratuit</button>
+      <button class="btn btn-outline-or" onclick="navigate('pronostics')">📊 Comment ça marche</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-v">🤖</div><div class="hero-stat-l">Analyse par IA</div></div>
+      <div class="hero-stat"><div class="hero-stat-v">8h00</div><div class="hero-stat-l">Mail + Telegram</div></div>
+      <div class="hero-stat"><div class="hero-stat-v">📊</div><div class="hero-stat-l">Bilan après la course</div></div>
+      <div class="hero-stat"><div class="hero-stat-v">0 €</div><div class="hero-stat-l">Pendant le lancement</div></div>
+    </div>
+  </div>
+
+  <div class="home-section">
+    <div class="sec-title"><div class="line"></div><div class="label">🌟 Ce que fait le service</div><div class="line"></div></div>
+    <div class="features-grid">
+      <div class="feat-card"><div class="feat-icon">🔍</div><h3 class="feat-title">Analyse par IA</h3><p class="feat-desc">Une intelligence artificielle analyse les partants du Quinté+ : musique (performances récentes), distance, terrain et historique enregistré depuis 2026.</p></div>
+      <div class="feat-card"><div class="feat-icon">📱</div><h3 class="feat-title">Envoi chaque matin</h3><p class="feat-desc">Le pronostic du Quinté+ (Tiercé, Quarté, Quinté+ et outsiders) est envoyé chaque matin vers 8h par e-mail et sur Telegram.</p></div>
+      <div class="feat-card"><div class="feat-icon">📊</div><h3 class="feat-title">Fiches chevaux (bientôt)</h3><p class="feat-desc">Des fiches techniques sur les partants sont en préparation. Un aperçu est visible dans l'onglet Fiches Techniques.</p></div>
+      <div class="feat-card"><div class="feat-icon">🏆</div><h3 class="feat-title">Résultats Vérifiables</h3><p class="feat-desc">Après chaque course, le pronostic est comparé automatiquement à l'arrivée officielle et noté. Tous les bilans sont conservés, aucun n'est effacé.</p></div>
+      <div class="feat-card"><div class="feat-icon">💬</div><h3 class="feat-title">Contact direct</h3><p class="feat-desc">Une question ? Écrivez à contact.midfusion@gmail.com, réponse dans les meilleurs délais.</p></div>
+      <div class="feat-card"><div class="feat-icon">🔒</div><h3 class="feat-title">Gratuit pendant le lancement</h3><p class="feat-desc">Aucun paiement n'est demandé pendant la phase de lancement. Vous serez prévenu à l'avance si des formules payantes sont proposées.</p></div>
+    </div>
+
+    <div class="sec-title"><div class="line"></div><div class="label">🔎 Notre engagement</div><div class="line"></div></div>
+    <div class="testimonials-grid">
+      <div class="testi-card"><div class="testi-stars">📢</div><p class="testi-text">Le service vient d'être lancé. Plutôt que d'afficher des chiffres ou des avis inventés, nous publierons ici les vrais résultats, au fur et à mesure.</p><div class="testi-author">Transparence</div></div>
+      <div class="testi-card"><div class="testi-stars">📈</div><p class="testi-text">Taux de réussite réel : en cours de mesure. Il sera calculé à partir des comparaisons quotidiennes avec l'arrivée officielle, dès que nous aurons assez de courses.</p><div class="testi-author">Résultats</div></div>
+      <div class="testi-card"><div class="testi-stars">⚠️</div><p class="testi-text">Un pronostic n'est jamais une garantie de gain. Ne jouez que des sommes que vous pouvez vous permettre de perdre.</p><div class="testi-author">Jeu responsable</div></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-brand">🏇 MindFusion Turf</div>
+    <div class="footer-links"><a href="mailto:contact.midfusion@gmail.com">Contact</a><a href="#" onclick="navigate('legal');return false">Mentions légales &amp; confidentialité</a></div>
+    <div class="footer-copy">Les jeux d'argent sont interdits aux mineurs · Jouer comporte des risques : endettement, isolement, dépendance. Pour être aidé, appelez le 09 74 75 13 13 (appel non surtaxé) · joueurs-info-service.fr<br/>Pronostics générés par IA à titre indicatif, sans garantie de gain. Service indépendant, sans lien avec le PMU.</div>
+  </footer>
+</section>
+
+<!-- ─────────────────────────────────────
+  PAGE : ABONNEMENTS
+───────────────────────────────────── -->
+<section class="page" id="page-abonnements">
+  <div class="plans-header">
+    <h1>Accès <span>Gratuit</span></h1>
+    <p>Service en lancement · Aucun paiement demandé</p>
+  </div>
+  <div class="plans-section">
+    <div class="plans-grid" style="grid-template-columns:minmax(0,520px);justify-content:center">
+      <div class="plan-card popular">
+        <div class="plan-ribbon">🚀 Lancement</div>
+        <div class="plan-head">
+          <div class="plan-icon">🎁</div>
+          <div class="plan-name">Accès Lancement</div>
+          <div class="plan-price"><div class="plan-price-val"><sup>€</sup>0</div></div>
+          <div class="plan-price-hint">Gratuit pendant toute la phase de lancement</div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-features">
+            <li><span class="chk">✅</span>Pronostic du Quinté+ chaque matin vers 8h</li>
+            <li><span class="chk">✅</span>Envoi par e-mail et sur Telegram</li>
+            <li><span class="chk">✅</span>Tiercé, Quarté, Quinté+ et outsiders proposés</li>
+            <li><span class="chk">✅</span>Bilan comparé à l'arrivée officielle après la course</li>
+          </ul>
+          <a class="plan-cta plan-cta-or" style="display:block;text-align:center;text-decoration:none" href="mailto:contact.midfusion@gmail.com?subject=Inscription%20MindFusion%20Turf&amp;body=Bonjour%2C%0A%0AJe%20souhaite%20recevoir%20les%20pronostics%20gratuits.%0AJe%20confirme%20avoir%20plus%20de%2018%20ans.%0A%0APr%C3%A9nom%20%3A%20">✉️ Demander mon accès gratuit</a>
+          <p style="font-family:Arial,sans-serif;font-size:12px;color:var(--txt2);margin-top:10px;text-align:center">Réservé aux personnes majeures (18 ans et plus).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title"><div class="line"></div><div class="label">❓ Questions Fréquentes</div><div class="line"></div></div>
+    <div class="plans-faq">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Comment sont faits les pronostics ? <span class="arr">▼</span></button>
+        <div class="faq-a">Ils sont générés automatiquement par une intelligence artificielle, à partir des données officielles des partants (musique, distance, terrain) et d'un historique des courses enregistré depuis 2026. Il n'y a pas d'expert humain derrière chaque pronostic.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Quelles courses sont couvertes ? <span class="arr">▼</span></button>
+        <div class="faq-a">Pour l'instant, uniquement la course support du Quinté+ du jour.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Le service va-t-il devenir payant ? <span class="arr">▼</span></button>
+        <div class="faq-a">Des formules payantes pourront être proposées plus tard. Rien ne vous sera facturé sans votre accord : vous serez prévenu à l'avance, avec les tarifs et conditions.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Les pronostics garantissent-ils des gains ? <span class="arr">▼</span></button>
+        <div class="faq-a">Non. Aucun pronostic ne garantit un gain. Les résultats réels seront publiés au fil du temps pour que chacun puisse juger. Jouez avec modération et uniquement des sommes que vous pouvez vous permettre de perdre.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────
+  PAGE : MENTIONS LÉGALES
+───────────────────────────────────── -->
+<section class="page" id="page-legal">
+  <div class="plans-header">
+    <h1>Mentions <span>Légales</span></h1>
+    <p>Informations sur l'éditeur et la confidentialité</p>
+  </div>
+  <div class="plans-section" style="font-family:Arial,sans-serif;font-size:14px;line-height:1.7;max-width:820px;margin:0 auto">
+    <h3>Éditeur du site</h3>
+    <p>MindFusion (entrepreneur individuel)<br/>
+    Saint-Michel-Chef-Chef (44730), France<br/>
+    SIRET : en cours d'attribution<br/>
+    Contact : <a href="mailto:contact.midfusion@gmail.com">contact.midfusion@gmail.com</a><br/>
+    Directeur de la publication : MindFusion</p>
+    <h3>Hébergeur</h3>
+    <p>Hostinger International Ltd<br/>61 Lordou Vironos Street, 6023 Larnaca, Chypre<br/>Site : <a href="https://www.hostinger.fr" target="_blank" rel="noopener">www.hostinger.fr</a></p>
+    <h3>Nature du service</h3>
+    <p>MindFusion Turf est un service indépendant de pronostics hippiques générés par intelligence artificielle. Il n'a aucun lien avec le PMU ni avec un opérateur de paris, et ne prend aucun pari. Les pronostics sont fournis à titre indicatif et ne garantissent aucun gain.</p>
+    <h3>Jeu responsable</h3>
+    <p>Les jeux d'argent sont interdits aux mineurs. Jouer comporte des risques : endettement, isolement, dépendance. Pour être aidé, appelez le 09 74 75 13 13 (appel non surtaxé) ou rendez-vous sur joueurs-info-service.fr.</p>
+    <h3>Données personnelles</h3>
+    <p>Les seules données collectées sont celles que vous nous transmettez par e-mail pour recevoir les pronostics (prénom, adresse e-mail, et éventuellement identifiant Telegram). Elles servent uniquement à l'envoi des pronostics, ne sont ni vendues ni transmises à des tiers, et sont supprimées sur simple demande à <a href="mailto:contact.midfusion@gmail.com">contact.midfusion@gmail.com</a>. Vous disposez d'un droit d'accès, de rectification et de suppression (RGPD).</p>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────
+  PAGE : FICHES TECHNIQUES
+───────────────────────────────────── -->
+<section class="page" id="page-fiches">
+  <div class="fiches-header">
+    <h1>Fiches <span>Techniques</span></h1>
+    <p>Aperçu de la future présentation des fiches chevaux</p>
+  </div>
+  <div class="fiches-section">
+    <div style="background:#FFF4D6;border:2px solid #C9A84C;color:#6B0F1A;border-radius:10px;padding:12px 16px;margin:0 auto 18px;max-width:900px;font-family:Arial,sans-serif;font-size:14px;line-height:1.5">🧪 <strong>Aperçu de démonstration.</strong> Les chevaux, les statistiques et les associations jockey / entraîneur ci-dessous sont <strong>fictifs</strong> : ils montrent seulement à quoi ressembleront les fiches. Les fiches ne sont pas encore en vente.</div>
+    <div class="fiches-filter">
+      <button class="flt-btn active" onclick="filterHorses('all',this)">Tous</button>
+      <button class="flt-btn" onclick="filterHorses('trot',this)">Trot</button>
+      <button class="flt-btn" onclick="filterHorses('galop',this)">Galop</button>
+      <button class="flt-btn" onclick="filterHorses('obstacle',this)">Obstacles</button>
+      <div class="flt-search">🔍 <input type="text" placeholder="Rechercher un cheval..." oninput="searchHorses(this.value)"/>
+      </div>
+    </div>
+    <div class="horses-grid" id="horses-grid"></div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────
+  PAGE : PRONOSTICS DU JOUR
+───────────────────────────────────── -->
+<section class="page" id="page-pronostics">
+  <div class="pronos-header">
+    <h1>Pronostics <span>du Jour</span></h1>
+    <p id="pronos-date">Exemple de présentation</p>
+  </div>
+  <div class="pronos-section">
+    <div style="background:#FFF4D6;border:2px solid #C9A84C;color:#6B0F1A;border-radius:10px;padding:12px 16px;margin:0 auto 18px;max-width:900px;font-family:Arial,sans-serif;font-size:14px;line-height:1.5">📬 <strong>Le vrai pronostic du jour</strong> est envoyé chaque matin vers 8h par e-mail et sur Telegram (<a href="#" onclick="navigate('abonnements');return false">demander l'accès gratuit</a>).<br/>🧪 La page ci-dessous est une <strong>démonstration avec des courses et des cotes fictives</strong> : ce ne sont pas les courses du jour.</div>
+    <div class="pronos-tabs" id="pronos-tabs"></div>
+    <div id="pronos-content"></div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────
+  PAGE : ESPACE MEMBRE
+───────────────────────────────────── -->
+<section class="page" id="page-membre">
+  <div class="membre-header">
+    <h1>Espace <span>Membre</span></h1>
+    <p style="color:rgba(255,255,255,.7);font-family:Arial,sans-serif;font-size:13px">Bientôt disponible</p>
+  </div>
+
+  <div class="auth-wrap" id="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-card-head">
+        <div class="ico">🏇</div>
+        <h2>Bientôt disponible</h2>
+        <p>L'espace membre est en préparation</p>
+      </div>
+      <div class="auth-card-body">
+        <p style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6">Pendant la phase de lancement, il n'y a pas de compte à créer : les pronostics sont envoyés directement par e-mail et sur Telegram.</p><div style="height:14px"></div>
+        <button class="btn-full btn-full-or" onclick="navigate('abonnements')">🎁 Demander l'accès gratuit →</button>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-wrap" id="dashboard-wrap"><div id="history-list"></div></div>
+</section>
+
+</main><!-- /main -->
+
+<!-- ══ MODAL ABONNEMENT ══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOverlay(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>🎁 Démarrer l'essai gratuit</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-plan-name">
+        <div class="plan-n" id="modal-plan-name"></div>
+        <div class="plan-p" id="modal-plan-price"></div>
+        <div style="font-family:Arial,sans-serif;font-size:12px;color:var(--txt2);margin-top:4px">7 jours gratuits · puis facturation mensuelle</div>
+      </div>
+      <div class="form-group"><label class="form-label">Prénom &amp; Nom</label><input type="text" class="form-input" placeholder="Jean Dupont"/></div>
+      <div class="form-group"><label class="form-label">Adresse e-mail</label><input type="email" class="form-input" placeholder="votre@email.com"/></div>
+      
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline-or" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-or btn-sm" onclick="confirmSubscribe()">Démarrer l'essai →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ══ INSTALL BANNER ══ -->
+<div class="install-banner" id="install-banner">
+  <div style="font-size:32px">📲</div>
+  <p><strong>Installer MindFusion Turf</strong>Ajoutez l'app sur votre écran d'accueil pour un accès rapide</p>
+  <button class="btn-install" id="btn-install">Installer</button>
+  <button class="btn-install-close" onclick="document.getElementById('install-banner').classList.remove('visible')">✕</button>
+</div>
+
+<script>
+// ═══════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('[data-page]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('[data-page="'+page+'"]').forEach(b=>b.classList.add('active'));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(page==='pronostics') renderPronostics();
+  if(page==='fiches') renderHorses();
+}
+
+function toggleMobileMenu(){
+  const sn=document.getElementById('sidenav');
+  sn.style.display=sn.style.display==='block'?'none':'block';
+}
+
+// ═══════════════════════════════
+// ABONNEMENTS
+// ═══════════════════════════════
+const prices={
+  mensuel:{starter:'4,99',pro:'9,99',premium:'19,99'},
+  annuel:{starter:'3,99',pro:'7,99',premium:'15,99'}
+};
+function toggleBilling(mode){
+  document.getElementById('tgl-mensuel').classList.toggle('active',mode==='mensuel');
+  document.getElementById('tgl-annuel').classList.toggle('active',mode==='annuel');
+  const p=prices[mode];
+  document.getElementById('price-starter').innerHTML=`<sup>€</sup>${p.starter.split(',')[0]}<sub>,${p.starter.split(',')[1]}/mois</sub>`;
+  document.getElementById('price-pro').innerHTML=`<sup>€</sup>${p.pro.split(',')[0]}<sub>,${p.pro.split(',')[1]}/mois</sub>`;
+  document.getElementById('price-premium').innerHTML=`<sup>€</sup>${p.premium.split(',')[0]}<sub>,${p.premium.split(',')[1]}/mois</sub>`;
+  const label=mode==='annuel'?' · Facturé annuellement':' · Facturé mensuellement';
+  document.getElementById('hint-starter').textContent=`Soit ${p.starter}€/mois${label}`;
+  document.getElementById('hint-pro').textContent=`Soit ${p.pro}€/mois${label}`;
+  document.getElementById('hint-premium').textContent=`Soit ${p.premium}€/mois${label}`;
+}
+function toggleFaq(btn){
+  btn.parentElement.classList.toggle('open');
+}
+
+// ═══════════════════════════════
+// MODAL
+// ═══════════════════════════════
+function openModal(name,price){
+  document.getElementById('modal-plan-name').textContent='Formule '+name;
+  document.getElementById('modal-plan-price').textContent=price+'€/mois';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
+function closeModalOverlay(e){if(e.target===document.getElementById('modal-overlay'))closeModal()}
+function confirmSubscribe(){
+  closeModal();
+  navigate('abonnements');
+}
+
+// ═══════════════════════════════
+// TOAST
+// ═══════════════════════════════
+let toastTimer;
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+(type==='error'?'error':'');
+  requestAnimationFrame(()=>{t.classList.add('show')});
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3800);
+}
+
+// ═══════════════════════════════
+// AUTH
+// ═══════════════════════════════
+function doLogin(){
+  const em=document.getElementById('login-email').value;
+  const pw=document.getElementById('login-pwd').value;
+  if((em==='demo@pmu.fr'&&pw==='demo1234')||em.includes('@')){
+    document.getElementById('auth-wrap').classList.add('hidden');
+    document.getElementById('dashboard-wrap').classList.add('visible');
+    renderHistory();
+    showToast('✅ Connecté avec succès !');
+  } else {
+    showToast('❌ Identifiants incorrects. Essayez : demo@pmu.fr / demo1234','error');
+  }
+}
+function doLogout(){
+  document.getElementById('auth-wrap').classList.remove('hidden');
+  document.getElementById('dashboard-wrap').classList.remove('visible');
+  showToast('👋 Déconnecté');
+}
+function showRegister(){
+  document.getElementById('login-form').style.display='none';
+  document.getElementById('register-form').style.display='block';
+}
+function showLogin(){
+  document.getElementById('register-form').style.display='none';
+  document.getElementById('login-form').style.display='block';
+}
+
+// ═══════════════════════════════
+// DATA & RENDER
+// ═══════════════════════════════
+const horsesData=[
+  {id:1,name:'ROYAL BORDEAUX',type:'trot',age:'6 ans',origine:'Varenne × Lady Red',
+   entraineur:'J. Martignon',jockey:'E. Hardouin',jockeyChange:false,
+   proprietaire:'Écurie Bel Avenir',couleurs:['#6B0F1A','#C9A84C'],
+   victoires:14,places:28,starts:52,
+   forme:[1,1,2,1,3],forme10:[3,5,1,2,1,1,2,1,4,1],
+   poids:61,oeileres:'Non',ferrure:'Normal',reposJours:14,distOptimale:'2700m',
+   statsEntraineur:{hippo:'Vincennes',victoires:18,courses:62,pct:29},
+   statsJockey:{hippo:'Vincennes',victoires:24,courses:80,pct:30},
+   emoji:'🏇'},
+  {id:2,name:'GOLDEN STRIDE',type:'galop',age:'4 ans',origine:'Frankel × Gold Mine',
+   entraineur:'A. Fabre',jockey:'C. Soumillon',jockeyChange:false,
+   proprietaire:'Godolphin Racing',couleurs:['#003087','#87CEEB'],
+   victoires:8,places:15,starts:24,
+   forme:[2,3,1,2,1],forme10:[4,2,3,1,2,1,3,2,1,2],
+   poids:58.5,oeileres:'Premier emploi',ferrure:'Changement',reposJours:21,distOptimale:'1600m',
+   statsEntraineur:{hippo:'Longchamp',victoires:31,courses:95,pct:33},
+   statsJockey:{hippo:'Longchamp',victoires:42,courses:130,pct:32},
+   emoji:'🐎'},
+  {id:3,name:'VERT GAZON',type:'galop',age:'5 ans',origine:'Galileo × Green Star',
+   entraineur:'J. Bary',jockey:'M. Guyon',jockeyChange:true,jockeyPrecedent:'F. Blondel',
+   proprietaire:'H. H. Aga Khan',couleurs:['#006400','#FF0000'],
+   victoires:11,places:22,starts:40,
+   forme:[3,2,3,1,2],forme10:[6,3,2,3,1,2,4,3,2,1],
+   poids:57,oeileres:'Oui',ferrure:'Normal',reposJours:10,distOptimale:'2000m',
+   statsEntraineur:{hippo:'Chantilly',victoires:22,courses:78,pct:28},
+   statsJockey:{hippo:'Chantilly',victoires:19,courses:72,pct:26},
+   emoji:'🏇'},
+  {id:4,name:'ÉTOILE FILANTE',type:'obstacle',age:'7 ans',origine:'Network × Luna Belle',
+   entraineur:'P. Cherel',jockey:'O. Peslier',jockeyChange:false,
+   proprietaire:'Mme. C. Dumont',couleurs:['#FFD700','#000080'],
+   victoires:9,places:18,starts:38,
+   forme:[5,4,2,3,1],forme10:[7,5,4,2,3,1,6,4,2,3],
+   poids:62,oeileres:'Oui',ferrure:'Changement',reposJours:28,distOptimale:'3200m',
+   statsEntraineur:{hippo:'Auteuil',victoires:14,courses:55,pct:25},
+   statsJockey:{hippo:'Auteuil',victoires:16,courses:60,pct:27},
+   emoji:'🐴'},
+  {id:5,name:'DARK HORSE',type:'trot',age:'5 ans',origine:'Ready Cash × Midnight',
+   entraineur:'Y. Duvaldestin',jockey:'A. Lemaitre',jockeyChange:true,jockeyPrecedent:'R. Desmigneux',
+   proprietaire:'Y. Duvaldestin',couleurs:['#1C1C1C','#808080'],
+   victoires:6,places:14,starts:30,
+   forme:[6,7,4,5,2],forme10:[9,6,7,4,5,2,8,5,4,3],
+   poids:59,oeileres:'Non',ferrure:'Normal',reposJours:7,distOptimale:'2150m',
+   statsEntraineur:{hippo:'Vincennes',victoires:8,courses:40,pct:20},
+   statsJockey:{hippo:'Vincennes',victoires:11,courses:50,pct:22},
+   emoji:'🏇'},
+  {id:6,name:'BELLE VICTOIRE',type:'galop',age:'4 ans',origine:'Sea The Stars × Victory',
+   entraineur:'H. de Nicolay',jockey:'T. Piccone',jockeyChange:false,
+   proprietaire:'Baron de Rothschild',couleurs:['#FFFF00','#000000'],
+   victoires:5,places:12,starts:20,
+   forme:[1,2,1,3,2],forme10:[3,1,2,1,3,2,1,2,1,1],
+   poids:56,oeileres:'Non',ferrure:'Normal',reposJours:18,distOptimale:'1400m',
+   statsEntraineur:{hippo:'Longchamp',victoires:9,courses:38,pct:24},
+   statsJockey:{hippo:'Longchamp',victoires:15,courses:58,pct:26},
+   emoji:'🐎'},
+  {id:7,name:'CHAMPION DU NORD',type:'trot',age:'8 ans',origine:'Jag de Bellouet × Nordic',
+   entraineur:'R. Martens',jockey:'B. Goop',jockeyChange:false,
+   proprietaire:'Nordic Stables',couleurs:['#003087','#FFFFFF'],
+   victoires:22,places:35,starts:80,
+   forme:[2,1,1,2,1],forme10:[2,1,2,1,1,2,1,3,1,2],
+   poids:63,oeileres:'Oui',ferrure:'Normal',reposJours:12,distOptimale:'2600m',
+   statsEntraineur:{hippo:'Vincennes',victoires:28,courses:90,pct:31},
+   statsJockey:{hippo:'Vincennes',victoires:35,courses:110,pct:32},
+   emoji:'🏇'},
+  {id:8,name:'FLASH ROYAL',type:'obstacle',age:'6 ans',origine:'Poliglote × Flash Star',
+   entraineur:'G. Macaire',jockey:'J. Reveley',jockeyChange:true,jockeyPrecedent:'N. Fehily',
+   proprietaire:'Mme. P. Macaire',couleurs:['#FF4500','#FFFFFF'],
+   victoires:7,places:16,starts:32,
+   forme:[3,4,2,1,3],forme10:[5,3,4,2,1,3,4,3,2,4],
+   poids:60,oeileres:'Premier emploi',ferrure:'Changement',reposJours:35,distOptimale:'3600m',
+   statsEntraineur:{hippo:'Auteuil',victoires:20,courses:70,pct:29},
+   statsJockey:{hippo:'Auteuil',victoires:12,courses:48,pct:25},
+   emoji:'🐴'},
+];
+
+function formeClass(n){
+  if(n===1)return'hf-1';
+  if(n===2)return'hf-2';
+  if(n===3)return'hf-3';
+  return'hf-x';
+}
+function formeColor(n){
+  if(n===1)return'#C9A84C';  // or = 1er
+  if(n===2)return'#2EAA4A';  // vert = 2e
+  if(n===3)return'#3A7BD5';  // bleu = 3e
+  return'#C0392B';            // rouge = 4e et +
+}
+
+// ─── Sparkline SVG ───
+function buildSparkline(f10){
+  if(!f10||!f10.length)return'';
+  const W=160,H=36,pad=4;
+  const max=Math.max(...f10),min=1;
+  const range=Math.max(max-min,1);
+  const pts=f10.map((v,i)=>{
+    const x=pad+i*(W-pad*2)/(f10.length-1);
+    // invert: position 1 = top, high pos = bottom
+    const y=H-pad-(( (v-min)/range )*(H-pad*2));
+    return[x,y];
+  });
+  const path='M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' L');
+  const area='M'+pts[0][0].toFixed(1)+','+(H-pad)+' L'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' L')+' L'+pts[pts.length-1][0].toFixed(1)+','+(H-pad)+' Z';
+  const dots=pts.map((p,i)=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3" fill="${formeColor(f10[i])}" stroke="#fff" stroke-width="1"/>`).join('');
+  // tendance
+  const firstHalf=f10.slice(0,5).reduce((a,b)=>a+b,0)/5;
+  const secHalf=f10.slice(5).reduce((a,b)=>a+b,0)/5;
+  const diff=firstHalf-secHalf; // lower is better (position 1=best)
+  let tend,tendClass;
+  if(diff>1){tend='📈 En progression';tendClass='tend-hausse';}
+  else if(diff<-1){tend='📉 En baisse';tendClass='tend-baisse';}
+  else{tend='➡️ Stable';tendClass='tend-stable';}
+  return `<div class="sparkline-wrap">
+    <div class="sparkline-title">
+      <span>Forme 10 dernières courses</span>
+      <span class="tendance-badge ${tendClass}">${tend}</span>
+    </div>
+    <svg class="sparkline-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="spkg${f10[0]}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#C9A84C" stop-opacity=".25"/>
+          <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="${area}" fill="url(#spkg${f10[0]})" />
+      <path d="${path}" stroke="#C9A84C" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+      ${dots}
+    </svg>
+    <div class="forme-legend">
+      <div class="forme-legend-item"><div class="fl-dot" style="background:#C9A84C"></div>1er</div>
+      <div class="forme-legend-item"><div class="fl-dot" style="background:#2EAA4A"></div>2e</div>
+      <div class="forme-legend-item"><div class="fl-dot" style="background:#3A7BD5"></div>3e</div>
+      <div class="forme-legend-item"><div class="fl-dot" style="background:#C0392B"></div>4e+</div>
+    </div>
+  </div>`;
+}
+
+function ferBadge(f){
+  if(f==='Changement')return`<span class="badge-change">⚠️ Changement</span>`;
+  return`<span style="font-family:Arial,sans-serif;font-size:12px;font-weight:bold;color:var(--vt)">Normal</span>`;
+}
+function oeilBadge(o){
+  if(o==='Premier emploi')return`<span class="badge-premier">🆕 1er emploi</span>`;
+  if(o==='Oui')return`<span style="color:var(--bx);font-weight:bold;font-family:Arial,sans-serif;font-size:12px">Oui</span>`;
+  return`<span style="color:#999;font-family:Arial,sans-serif;font-size:12px">Non</span>`;
+}
+function jckBadge(h){
+  if(h.jockeyChange)return`<span class="badge-jck-change">🔄 Changement</span> <span style="font-size:10px;color:#999;font-family:Arial,sans-serif">(ex: ${h.jockeyPrecedent})</span>`;
+  return`<span style="color:var(--vt);font-weight:bold;font-family:Arial,sans-serif;font-size:12px">Inchangé</span>`;
+}
+function couleurSwatches(cols){
+  return cols.map(c=>`<span class="couleur-swatch" style="background:${c}"></span>`).join('');
+}
+
+let currentHorses=horsesData;
+function renderHorses(list){
+  const g=document.getElementById('horses-grid');
+  if(!g)return;
+  const h=list||currentHorses;
+  g.innerHTML=h.map(horse=>`
+  <div class="horse-card" data-type="${horse.type}">
+    <div class="horse-img">
+      <span class="num">#${horse.id}</span>
+      ${horse.emoji}
+    </div>
+    <div class="horse-body">
+      <div class="horse-name">${horse.name}${horse.jockeyChange?'<span class="badge-jck-change" style="margin-left:6px;font-size:9px">🔄 Jockey</span>':''}</div>
+      <div class="horse-meta">${horse.type.charAt(0).toUpperCase()+horse.type.slice(1)} · ${horse.age} · ${horse.origine}</div>
+
+      <div class="horse-stats">
+        <div class="hstat"><div class="hstat-v">${horse.victoires}</div><div class="hstat-l">Victoires</div></div>
+        <div class="hstat"><div class="hstat-v">${horse.places}</div><div class="hstat-l">Placés</div></div>
+        <div class="hstat"><div class="hstat-v">${Math.round(horse.victoires/horse.starts*100)}%</div><div class="hstat-l">Win%</div></div>
+      </div>
+
+      ${buildSparkline(horse.forme10)}
+
+      <div class="horse-forme" style="margin-bottom:12px">
+        ${horse.forme.map(f=>`<div class="hforme-box ${formeClass(f)}">${f}</div>`).join('')}
+        <span style="font-family:Arial,sans-serif;font-size:10px;color:#999;align-self:center;margin-left:4px">← récent (5)</span>
+      </div>
+
+      <div class="horse-details-grid">
+        <div class="hdet"><span class="hdet-ico">⚖️</span><div class="hdet-content"><div class="hdet-lbl">Poids</div><div class="hdet-val">${horse.poids} kg</div></div></div>
+        <div class="hdet"><span class="hdet-ico">🎯</span><div class="hdet-content"><div class="hdet-lbl">Dist. optimale</div><div class="hdet-val">${horse.distOptimale}</div></div></div>
+        <div class="hdet"><span class="hdet-ico">😎</span><div class="hdet-content"><div class="hdet-lbl">Œillères</div><div class="hdet-val">${oeilBadge(horse.oeileres)}</div></div></div>
+        <div class="hdet"><span class="hdet-ico">🔧</span><div class="hdet-content"><div class="hdet-lbl">Ferrure</div><div class="hdet-val">${ferBadge(horse.ferrure)}</div></div></div>
+        <div class="hdet" style="grid-column:1/-1"><span class="hdet-ico">💤</span><div class="hdet-content"><div class="hdet-lbl">Repos depuis dernière course</div><div class="hdet-val">${horse.reposJours} jours</div></div></div>
+      </div>
+
+      <div class="horse-details-grid" style="grid-template-columns:1fr">
+        <div class="hdet"><span class="hdet-ico">🏇</span><div class="hdet-content"><div class="hdet-lbl">Jockey</div><div class="hdet-val">${horse.jockey} ${horse.jockeyChange?'<span class="badge-jck-change">🔄</span>':''}</div></div></div>
+      </div>
+      ${horse.jockeyChange?`<div style="font-family:Arial,sans-serif;font-size:11px;color:#E67E22;margin-bottom:8px">⚠️ Changement de jockey (ex : ${horse.jockeyPrecedent})</div>`:''}
+
+      <div class="horse-pro-section">
+        <div class="horse-pro-title">📊 Stats Entraîneur · ${horse.statsEntraineur.hippo}</div>
+        <div class="horse-pro-row"><span>🏋️ ${horse.entraineur}</span><span><span class="hippo-winpct">${horse.statsEntraineur.pct}%</span> · ${horse.statsEntraineur.victoires}V / ${horse.statsEntraineur.courses} courses</span></div>
+        <div class="horse-pro-title" style="margin-top:8px">📊 Stats Jockey · ${horse.statsJockey.hippo}</div>
+        <div class="horse-pro-row"><span>🎽 ${horse.jockey}</span><span><span class="hippo-winpct">${horse.statsJockey.pct}%</span> · ${horse.statsJockey.victoires}V / ${horse.statsJockey.courses} courses</span></div>
+        <div class="horse-pro-title" style="margin-top:8px">🏠 Propriétaire</div>
+        <div class="horse-pro-row">
+          <span>${horse.proprietaire}</span>
+          <span class="prop-couleurs">${couleurSwatches(horse.couleurs)}</span>
+        </div>
+      </div>
+
+      <div class="horse-foot">
+        <div class="horse-price" style="font-size:13px">Exemple fictif</div>
+        <button class="btn-buy" onclick="buyHorse('${horse.name}')">Bientôt</button>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+function filterHorses(type,btn){
+  document.querySelectorAll('.flt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentHorses=type==='all'?horsesData:horsesData.filter(h=>h.type===type);
+  renderHorses();
+}
+function searchHorses(q){
+  const filtered=horsesData.filter(h=>h.name.toLowerCase().includes(q.toLowerCase()));
+  renderHorses(filtered);
+}
+function buyHorse(name){showToast('🧪 Les fiches chevaux ne sont pas encore disponibles.')}
+
+// ═══════════════════════════════
+// PRONOSTICS
+// ═══════════════════════════════
+const pronosData=[
+  {
+    id:'r1c4',label:'R1 C4 – Vincennes',info:'Trot attelé · 2700m · 16h10 · 12 partants',hippo:'Vincennes',
+    lienPMU:'https://www.pmu.fr/turf/aujourd-hui/vincennes/reunions/R1',
+    meteo:{
+      temp:12,tempSol:9,vent:{force:18,dir:'SO'},pression:1008,
+      ciel:'Couvert',piste:'Souple',terrain:'Herbe',humidite:72,
+      ville:'Vincennes',lat:48.845,lon:2.439
+    },
+    hippoStats:{
+      record:{dist:'2700m',temps:'1\'11"3',cheval:'Fakir du Cochet',annee:2021},
+      cordeInt:58,cordeExt:42,
+      distStats:[
+        {dist:'2700m',courses:180,favoriGagne:38},
+        {dist:'2150m',courses:120,favoriGagne:35},
+        {dist:'1750m',courses:95,favoriGagne:41},
+      ],
+      meteoHist:{pluieFreq:'42%',tempMoy:'11°C',pisteLourd:'28% du temps'}
+    },
+    selection:{gagnant:'ROYAL BORDEAUX (1)',couple:'1 – 4',tierce:'1 – 4 – 7',quarte:'1 – 4 – 7 – 9'},
+    analyse:'ROYAL BORDEAUX s\'impose comme le favori incontestable avec 3 victoires sur ses 4 dernières. GOLDEN STRIDE constitue la principale menace. Méfiance envers DARK HORSE en progression notable.',
+    chevaux:[
+      {num:1,name:'ROYAL BORDEAUX',jockey:'E. Hardouin',cote:3.2,cotePrev:3.5,vol:32,rapportDern:'3.8',forme:'1-1-2-1',tag:'star',tagLabel:'⭐ BASE',top:true},
+      {num:4,name:'GOLDEN STRIDE',jockey:'C. Soumillon',cote:5.5,cotePrev:5.2,vol:21,rapportDern:'6.2',forme:'2-3-1-2',tag:'base',tagLabel:'JOKER'},
+      {num:7,name:'VERT GAZON',jockey:'M. Guyon',cote:8.0,cotePrev:8.0,vol:15,rapportDern:'9.4',forme:'3-2-3-1',tag:'place',tagLabel:'PLACÉ'},
+      {num:9,name:'DARK HORSE',jockey:'O. Peslier',cote:14.0,cotePrev:17.0,vol:10,rapportDern:'18.5',forme:'5-4-2-3',tag:'place',tagLabel:'PLACÉ'},
+      {num:11,name:'ÉTOILE FILANTE',jockey:'A. Lemaitre',cote:22.0,cotePrev:20.0,vol:5,rapportDern:'28.0',forme:'6-7-4-5',tag:'out',tagLabel:'SURPRISE'},
+    ],
+    ordre:'1 – 4 – 7 – 9'
+  },
+  {
+    id:'r2c6',label:'R2 C6 – Longchamp',info:'Galop plat · 1600m · 14h35 · 10 partants',hippo:'Longchamp',
+    lienPMU:'https://www.pmu.fr/turf/aujourd-hui/longchamp/reunions/R2',
+    meteo:{
+      temp:14,tempSol:11,vent:{force:24,dir:'O'},pression:1013,
+      ciel:'Partiellement nuageux',piste:'Bon',terrain:'Herbe',humidite:58,
+      ville:'Longchamp',lat:48.864,lon:2.239
+    },
+    hippoStats:{
+      record:{dist:'1600m',temps:'1\'34"8',cheval:'Enable',annee:2018},
+      cordeInt:52,cordeExt:48,
+      distStats:[
+        {dist:'1600m',courses:220,favoriGagne:40},
+        {dist:'2000m',courses:180,favoriGagne:38},
+        {dist:'2400m',courses:110,favoriGagne:36},
+      ],
+      meteoHist:{pluieFreq:'38%',tempMoy:'13°C',pisteLourd:'22% du temps'}
+    },
+    selection:{gagnant:'BELLE VICTOIRE (3)',couple:'3 – 6',tierce:'3 – 6 – 2',quarte:'3 – 6 – 2 – 8'},
+    analyse:'BELLE VICTOIRE montre une excellente forme sur 1600m avec deux victoires consécutives. Attention à FLASH ROYAL qui a bien travaillé cette semaine selon les sources du paddock.',
+    chevaux:[
+      {num:3,name:'BELLE VICTOIRE',jockey:'T. Piccone',cote:4.5,cotePrev:5.0,vol:28,rapportDern:'5.3',forme:'1-2-1-1',tag:'star',tagLabel:'⭐ BASE',top:true},
+      {num:6,name:'CHAMPION DU NORD',jockey:'B. Goop',cote:6.0,cotePrev:5.8,vol:22,rapportDern:'7.1',forme:'2-1-2-3',tag:'base',tagLabel:'JOKER'},
+      {num:2,name:'FLASH ROYAL',jockey:'J. Reveley',cote:9.5,cotePrev:9.5,vol:14,rapportDern:'11.2',forme:'4-3-2-2',tag:'place',tagLabel:'PLACÉ'},
+      {num:8,name:'VERT GAZON II',jockey:'M. Guyon',cote:18.0,cotePrev:15.0,vol:7,rapportDern:'22.0',forme:'5-6-3-4',tag:'out',tagLabel:'SURPRISE'},
+    ],
+    ordre:'3 – 6 – 2 – 8'
+  }
+];
+
+const tagClasses={star:'tag badge-or',base:'tag badge-bx',place:'tag badge-vt',out:'tag badge-gray'};
+
+function renderPronostics(){
+  const d=new Date();
+  const opts={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+  document.getElementById('pronos-date').textContent='🧪 Exemple de présentation · données fictives';
+
+  const tabs=document.getElementById('pronos-tabs');
+  tabs.innerHTML=pronosData.map((r,i)=>`
+    <button class="ptab${i===0?' active':''}" onclick="switchPronoTab(${i},this)">${r.label}</button>
+  `).join('');
+
+  renderPronoContent(0);
+}
+
+function switchPronoTab(idx,btn){
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPronoContent(idx);
+}
+
+// ─── Helpers météo ───
+function pisteClass(p){
+  const m={Bon:'piste-bon',Souple:'piste-souple',Lourd:'piste-lourd','Très lourd':'piste-tres-lourd'};
+  return m[p]||'piste-bon';
+}
+function meteoIco(ciel){
+  if(/soleil|clair/i.test(ciel))return'☀️';
+  if(/nuageux/i.test(ciel))return'⛅';
+  if(/couvert/i.test(ciel))return'☁️';
+  if(/pluie|pluvieux/i.test(ciel))return'🌧️';
+  if(/vent/i.test(ciel))return'💨';
+  return'🌥️';
+}
+function arrowDir(cur,prev){
+  if(cur<prev)return{ico:'▼',cls:'arrow-down',lbl:'En baisse'};
+  if(cur>prev)return{ico:'▲',cls:'arrow-up',lbl:'En hausse'};
+  return{ico:'→',cls:'arrow-stable',lbl:'Stable'};
+}
+
+function buildMeteoBlock(m){
+  return`<div class="meteo-block">
+    <div class="meteo-head">
+      <div class="meteo-head-l">${meteoIco(m.ciel)} Conditions &amp; Météo · ${m.ville}</div>
+      <div class="meteo-src">OpenWeatherMap (démo)</div>
+    </div>
+    <div class="meteo-grid">
+      <div class="meteo-cell"><div class="meteo-ico">🌡️</div><div class="meteo-val">${m.temp}°C</div><div class="meteo-lbl">Température</div></div>
+      <div class="meteo-cell"><div class="meteo-ico">🏔️</div><div class="meteo-val">${m.tempSol}°C</div><div class="meteo-lbl">Sol</div></div>
+      <div class="meteo-cell"><div class="meteo-ico">💨</div><div class="meteo-val">${m.vent.force} km/h</div><div class="meteo-lbl">Vent · ${m.vent.dir}</div></div>
+      <div class="meteo-cell"><div class="meteo-ico">🔵</div><div class="meteo-val">${m.pression}</div><div class="meteo-lbl">Pression hPa</div></div>
+      <div class="meteo-cell"><div class="meteo-ico">💧</div><div class="meteo-val">${m.humidite}%</div><div class="meteo-lbl">Humidité</div></div>
+      <div class="meteo-cell"><div class="meteo-ico">${meteoIco(m.ciel)}</div><div class="meteo-val" style="font-size:12px">${m.ciel}</div><div class="meteo-lbl">Ciel</div></div>
+    </div>
+    <div class="piste-row">
+      <span class="piste-label">État piste :</span>
+      <span class="piste-badge ${pisteClass(m.piste)}">${m.piste}</span>
+      <span class="piste-label" style="margin-left:12px">Terrain :</span>
+      <span class="terrain-badge">${m.terrain}</span>
+    </div>
+    <div class="meteo-api-note">* Données météo via OpenWeatherMap API — clé à configurer dans settings.js pour les données en direct</div>
+  </div>`;
+}
+
+function buildCotesRT(chevaux){
+  const rows=chevaux.map(c=>{
+    const arr=arrowDir(c.cote,c.cotePrev);
+    const dp=Math.abs(c.cote-c.cotePrev).toFixed(1);
+    return`<tr>
+      <td><span class="cote-num">${c.num}</span><span class="cote-horse-name">${c.name}</span></td>
+      <td>
+        <span class="cote-val" id="cval-${c.num}-${c.cote}">${c.cote.toFixed(1)}</span>
+        <span class="cote-arrow ${arr.cls}">${arr.ico}</span>
+        <span style="font-size:10px;color:#999;font-family:Arial,sans-serif"> ${dp !== '0.0' ? (arr.cls==='arrow-down'?'-':'+') + dp : ''}</span>
+      </td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="vol-bar-wrap"><div class="vol-bar" style="width:${c.vol}%"></div></div>
+          <span class="vol-pct">${c.vol}%</span>
+        </div>
+      </td>
+      <td><span class="cote-depart">~<strong>${(c.cote*0.92).toFixed(1)}</strong></span></td>
+      <td><span class="rapport-last">Dern. : ${c.rapportDern}</span></td>
+    </tr>`;
+  }).join('');
+  return`<div class="cotes-rt-block">
+    <div class="cotes-rt-head">
+      <span>📈 Cotes (exemple fictif)</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="cotes-table">
+      <thead><tr>
+        <th>Cheval</th><th>Cote actuelle</th><th>Volume paris</th><th>Cote départ est.</th><th>Rapport dern. course</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    </div>
+  </div>`;
+}
+
+function buildHippoStats(hs,hippo){
+  const distRows=hs.distStats.map(d=>
+    `<div class="horse-pro-row"><span>📏 ${d.dist}</span><span>${d.courses} courses · Favori gagne <strong>${d.favoriGagne}%</strong></span></div>`
+  ).join('');
+  const cordeW=hs.cordeInt;
+  return`<div class="hippo-stats-block">
+    <div class="hippo-stats-head">
+      <span>🏟️ Statistiques · ${hippo}</span>
+      <span style="font-family:Arial,sans-serif;font-size:11px;color:rgba(255,255,255,.45)">Données historiques</span>
+    </div>
+    <div class="hippo-grid">
+      <div class="hippo-cell">
+        <div class="hippo-cell-title">🏆 Record de piste</div>
+        <div class="hippo-cell-val">${hs.record.temps}</div>
+        <div class="hippo-cell-sub">${hs.record.dist} · ${hs.record.cheval} (${hs.record.annee})</div>
+      </div>
+      <div class="hippo-cell">
+        <div class="hippo-cell-title">🔵 Avantage corde intérieure</div>
+        <div class="hippo-cell-val">${hs.cordeInt}% <span style="color:rgba(255,255,255,.4);font-size:12px">vs ${hs.cordeExt}%</span></div>
+        <div class="corde-bar" style="margin-top:6px"><div class="corde-int" style="width:${cordeW}%"></div><div class="corde-ext"></div></div>
+      </div>
+      <div class="hippo-cell" style="grid-column:1/-1">
+        <div class="hippo-cell-title">📏 Stats par distance</div>
+        <div style="margin-top:4px">${distRows}</div>
+      </div>
+    </div>
+    <div class="hippo-meteo-hist">
+      <span style="font-family:Arial,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4)">Météo historique :</span>
+      <span class="hmh-item">🌧️ Pluie <strong>${hs.meteoHist.pluieFreq}</strong></span>
+      <span class="hmh-item">🌡️ Moy. <strong>${hs.meteoHist.tempMoy}</strong></span>
+      <span class="hmh-item">⚠️ Piste lourde <strong>${hs.meteoHist.pisteLourd}</strong></span>
+    </div>
+  </div>`;
+}
+
+function renderPronoContent(idx){
+  const r=pronosData[idx];
+
+  const pmuBtn='';
+
+  document.getElementById('pronos-content').innerHTML=
+    pmuBtn+
+    buildMeteoBlock(r.meteo)+
+    `<div class="prono-selection">
+      <div class="sel-head">⭐ Sélection du Jour – ${r.hippo}</div>
+      <div class="sel-rows">
+        <div class="sel-row">🥇 Gagnant : <strong>${r.selection.gagnant}</strong></div>
+        <div class="sel-row">🎯 Couplé : <strong>${r.selection.couple}</strong></div>
+        <div class="sel-row">🏆 Tiercé : <strong>${r.selection.tierce}</strong></div>
+        <div class="sel-row">💎 Quarté : <strong>${r.selection.quarte}</strong></div>
+      </div>
+    </div>`+
+    buildCotesRT(r.chevaux)+
+    `<div class="prono-card">
+      <div class="prono-card-head">
+        <div class="prono-race">${r.label}<small>${r.info}</small></div>
+        <div class="prono-meta">🧪 Exemple<br/><span style="color:var(--or2);font-weight:bold">${r.hippo}</span></div>
+      </div>
+      <div class="prono-table-wrap">
+        <table class="prono-table">
+          <thead><tr>
+            <th>Cheval</th><th>Jockey / Driver</th><th>Cote</th><th>Forme</th><th>Conseil</th>
+          </tr></thead>
+          <tbody>
+            ${r.chevaux.map(c=>`
+            <tr${c.top?' class="top-pick"':''}>
+              <td><span class="prono-num">${c.num}</span><span class="prono-horse">${c.name}</span></td>
+              <td style="font-size:12px;color:#666;font-style:italic">${c.jockey}</td>
+              <td><span class="prono-cote">${c.cote.toFixed(1)}</span></td>
+              <td><span class="prono-forme">${c.forme}</span></td>
+              <td class="prono-conseil"><span class="${tagClasses[c.tag]}">${c.tagLabel}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div class="prono-card-foot">🏇 Ordre d'arrivée suggéré : <strong>${r.ordre}</strong></div>
+    </div>`+
+    `<div class="analyse-box" style="margin-top:16px;margin-bottom:18px">
+      <div style="font-family:Arial,sans-serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:var(--bx);margin-bottom:8px">🔍 Analyse de la Course</div>
+      <p style="font-family:Arial,sans-serif;font-size:13px;color:#444;line-height:1.7">${r.analyse}</p>
+    </div>`+
+    buildHippoStats(r.hippoStats,r.hippo);
+
+  // Lancer l'animation cotes après rendu
+  startCotesAnimation(r.chevaux);
+}
+
+// ─── Animation cotes temps réel ───
+let cotesInterval=null;
+function startCotesAnimation(chevaux){
+  clearInterval(cotesInterval);
+  return; // désactivé : pas de fausses cotes "en direct"
+  cotesInterval=setInterval(()=>{
+    chevaux.forEach(c=>{
+      const el=document.getElementById('cval-'+c.num+'-'+c.cote);
+      if(!el)return;
+      // micro variation aléatoire ±0.1 pour simuler live
+      const delta=(Math.random()-.5)*0.2;
+      const newCote=Math.max(1.1,c.cote+delta);
+      el.textContent=newCote.toFixed(1);
+      const arr=arrowDir(newCote,c.cote);
+      el.style.color=arr.cls==='arrow-down'?'var(--vt)':arr.cls==='arrow-up'?'#C0392B':'var(--vt)';
+    });
+  },4000);
+}
+
+// ═══════════════════════════════
+// HISTORY
+// ═══════════════════════════════
+const historyData=[
+  {date:'31/03',name:'R1 C4 – Vincennes',sub:'Royal Bordeaux · Cote 3.2',result:'win',label:'+€32'},
+  {date:'30/03',name:'R2 C5 – Longchamp',sub:'Belle Victoire · Cote 4.5',result:'win',label:'+€45'},
+  {date:'29/03',name:'R1 C3 – Chantilly',sub:'Dark Horse · Cote 14.0',result:'lose',label:'-€10'},
+  {date:'28/03',name:'R3 C2 – Vincennes',sub:'Champion du Nord · Cote 2.8',result:'win',label:'+€28'},
+  {date:'27/03',name:'R1 C6 – Paris',sub:'Golden Stride · Cote 5.5',result:'partial',label:'+€12'},
+  {date:'26/03',name:'R2 C4 – Caen',sub:'Étoile Filante · Cote 22.0',result:'lose',label:'-€10'},
+  {date:'25/03',name:'R1 C1 – Vincennes',sub:'Flash Royal · Cote 9.5',result:'win',label:'+€95'},
+];
+const resultClass={win:'hist-win',lose:'hist-lose',partial:'hist-partial'};
+const resultIcon={win:'✅',lose:'❌',partial:'🔶'};
+
+function renderHistory(){
+  document.getElementById('history-list').innerHTML=historyData.map(h=>`
+  <div class="hist-item">
+    <div class="hist-date">${h.date}</div>
+    <div class="hist-info">
+      <div class="hist-name">${h.name}</div>
+      <div class="hist-sub">${h.sub}</div>
+    </div>
+    <div class="hist-result ${resultClass[h.result]}">${resultIcon[h.result]} ${h.label}</div>
+  </div>`).join('');
+}
+
+// ═══════════════════════════════
+// PWA / SERVICE WORKER
+// ═══════════════════════════════
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  const banner=document.getElementById('install-banner');
+  banner.classList.add('visible');
+  document.getElementById('btn-install').onclick=async()=>{
+    banner.classList.remove('visible');
+    deferredPrompt.prompt();
+    const{outcome}=await deferredPrompt.userChoice;
+    if(outcome==='accepted')showToast('✅ App installée avec succès !');
+    deferredPrompt=null;
+  };
+});
+
+// ═══════════════════════════════
+// OPENWEATHERMAP (clé démo)
+// Remplacer OWM_API_KEY par votre clé sur openweathermap.org
+// ═══════════════════════════════
+const OWM_API_KEY='VOTRE_CLE_ICI'; // <- à remplacer
+
+async function fetchMeteo(lat,lon,meteoObj){
+  if(OWM_API_KEY==='VOTRE_CLE_ICI'){
+    // Mode démo : données simulées déjà dans pronosData
+    return meteoObj;
+  }
+  try{
+    const url=`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OWM_API_KEY}&units=metric&lang=fr`;
+    const res=await fetch(url);
+    const d=await res.json();
+    return{
+      ...meteoObj,
+      temp:Math.round(d.main.temp),
+      tempSol:Math.round(d.main.temp-2),
+      vent:{force:Math.round(d.wind.speed*3.6),dir:degToDir(d.wind.deg)},
+      pression:d.main.pressure,
+      humidite:d.main.humidity,
+      ciel:d.weather[0].description,
+    };
+  }catch(e){
+    return meteoObj; // fallback données démo
+  }
+}
+
+function degToDir(deg){
+  const dirs=['N','NE','E','SE','S','SO','O','NO'];
+  return dirs[Math.round(deg/45)%8];
+}
+
+// Init
+document.getElementById('pronos-date') && (() => {
+  const d=new Date();
+  const opts={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+  document.getElementById('pronos-date').textContent='🧪 Exemple de présentation · données fictives';
+})();
+</script>
+</body>
+</html>
